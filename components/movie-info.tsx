@@ -1,11 +1,28 @@
 import { url } from "../app/(home)/page";
+import styles from "./../styles/movie-info.module.css";
 
-async function getMovie(id: string) {
+export async function getMovie(id: string) {
   const response = await fetch(`${url}/${id}`);
   return response.json();
 }
 
 export default async function MovieInfo({ id }: { id: string }) {
   const movies = await getMovie(id);
-  return <h6>{JSON.stringify(movies)}</h6>;
+  return (
+    <div className={styles.container}>
+      <img
+        className={styles.poster}
+        src={movies.poster_path}
+        alt={movies.title}
+      />
+      <div className={styles.info}>
+        <h1 className={styles.title}>{movies.title}</h1>
+        <h3>⭐️{movies.vote_average.toFixed(1)}</h3>
+        <p>{movies.overview}</p>
+        <a href={movies.homepage} target={"_blank"}>
+          HomePage &rarr;
+        </a>
+      </div>
+    </div>
+  );
 }
